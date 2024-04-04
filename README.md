@@ -16,7 +16,7 @@
 
 - ### 只需下载 **SaveGo.bat** 文件！
 
-**注意⚠️**：发布在 [**Releases**](https://github.com/Cairl/SaveGo/releases) 页面的可执行文件是包含我个人文件的压缩包，含有解压密码，无法使用。
+**⚠️注意**：发布在 [**Releases**](https://github.com/Cairl/SaveGo/releases) 页面的可执行文件是包含我个人文件的压缩包，含有解压密码，无法使用。
 
 <br>
 
