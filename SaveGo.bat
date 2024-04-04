@@ -6,14 +6,14 @@ for /f %%w in ('powershell -command "(Get-Date).DayOfYear / 7 + 1 -as [int]"') d
     title !version!
 )
 
-for %%f in ("%cd%") do if not "%%~nxf" == "%~n0" (
-    if not exist "%~n0" md "%~n0"
-    move "%~nx0" "%~n0\%~nx0" > Nul
+for %%f in ("%cd%") do if /i not "%%~nxf" == "%~n0" (
+    if /i not exist "%~n0" md "%~n0"
+    move "%~nx0" "%~n0\%~nx0" >Nul
     cd "%~n0"
     call "%~nx0"
 )
 
-if not exist "%ProgramData%\Microsoft\Windows\Start Menu\Programs\%~n0.lnk" (
+if /i not exist "%ProgramData%\Microsoft\Windows\Start Menu\Programs\%~n0.lnk" (
     powershell.exe -Command "Start-Process powershell.exe -ArgumentList '-Command $shell = New-Object -ComObject WScript.Shell; $shortcut = $shell.CreateShortcut(''%ProgramData%\Microsoft\Windows\Start Menu\Programs\%~n0.lnk''); $shortcut.WorkingDirectory = ''%~dp0''; $shortcut.TargetPath = ''%~dpnx0''; $shortcut.IconLocation = ''%SystemRoot%\System32\SHELL32.dll,199''; $shortcut.Save()'" -Verb RunAs 
 )
 
@@ -54,14 +54,14 @@ call :!target!
 :steam
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\WOW6432Node\Valve\Steam').InstallPath"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKCU:\SOFTWARE\Valve\Steam\ActiveProcess').ActiveUser"') do set "steam_id=%%r"
-    if not defined steam_id echo ERROR: you are not logged in "!target!" & goto menu
+    if /i not defined steam_id echo ERROR: you are not logged in "!target!" & goto menu
 
 
     if /i %action% == save ( 
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
         
         set "file=config\config.vdf"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!object!\!file!" "%%~dpf"
@@ -88,14 +88,14 @@ call :!target!
 :obs
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\OBS Studio').'(Default)'"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
     tasklist | findstr /i "obs64.exe"
-    if not errorlevel 1 echo "!target!" is running, please close the program to continue & goto obs
+    if /i not errorlevel 1 echo "!target!" is running, please close the program to continue & goto obs
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=obs-studio\global.ini"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!appdata!\!file!" "%%~dpf"
@@ -120,11 +120,11 @@ call :!target!
 :idm
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Internet Download Manager').DisplayIcon"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if not exist !savego! md !savego!
+        if /i not exist !savego! md !savego!
 
         reg export "HKEY_CURRENT_USER\Software\DownloadManager" "!savego!\config.reg" /y
     )
@@ -143,11 +143,11 @@ call :!target!
 :potplayer
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKCU:\SOFTWARE\DAUM\PotPlayer64').ProgramFolder"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=Skins"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!object!\!file!" "%%~f"
@@ -174,17 +174,19 @@ call :!target!
 :savego
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKCU:\SOFTWARE\7-Zip').Path"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
         set /p "password=set your archive password: "
 
-        "!object!7z.exe" a -sfx7z.sfx -p!password! "!userprofile!\desktop\!version!.exe" "%~dp0"
-            
-        explorer /select,"!userprofile!\desktop\!version!.exe"
+        if /i exist "*.exe" del "*.exe"
 
-        start https://github.com/Cairl/savego/releases/new
+        "!object!7z.exe" a -sfx7z.sfx -p!password! "!version!.exe" "%~dp0"
+            
+        explorer /select, "%~dp0!version!.exe"
+
+        start https://github.com/Cairl/SaveGo/releases/new
     )
 
     goto menu
@@ -193,11 +195,11 @@ call :!target!
 :apex
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 1172470').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=Saved Games\Respawn\Apex\local"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -220,17 +222,17 @@ call :!target!
 :cs2
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 730').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\WOW6432Node\Valve\Steam').InstallPath"') do set "steam=%%r"
-    if not defined steam echo ERROR: you have not installed "steam" & goto menu
+    if /i not defined steam echo ERROR: you have not installed "steam" & goto menu
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKCU:\SOFTWARE\Valve\Steam\ActiveProcess').ActiveUser"') do set "steam_id=%%r"
-    if not defined steam_id echo ERROR: you are not logged in "!target!" & goto menu
+    if /i not defined steam_id echo ERROR: you are not logged in "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=userdata\!steam_id!\730\local\cfg"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!steam!\!file!" "%%~f"
@@ -253,11 +255,11 @@ call :!target!
 :justcase3
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 225540').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=Documents\Square Enix\Just Cause 3\Saves"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -274,11 +276,11 @@ call :!target!
 :gta4
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 12210').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=Documents\Rockstar Games\GTA IV"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -295,11 +297,11 @@ call :!target!
 :gta5
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 271590').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=Documents\Rockstar Games\GTA V"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -316,11 +318,11 @@ call :!target!
 :r6vegas
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 13540').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=Documents\Ubisoft\R6Vegas"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -337,11 +339,11 @@ call :!target!
 :r6vegas2
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 15120').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=Documents\My Games\Ubisoft\R6Vegas2"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -358,11 +360,11 @@ call :!target!
 :undertale
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 391540').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=UNDERTALE"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!localappdata!\!file!" "%%~f"
@@ -378,11 +380,11 @@ call :!target!
 
 :nfs9
 
-    if not exist "!userprofile!\Documents\NFS Most Wanted" echo ERROR: you have not installed "!target!" & goto menu
+    if /i not exist "!userprofile!\Documents\NFS Most Wanted" echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=Documents\NFS Most Wanted"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -399,11 +401,11 @@ call :!target!
 :dyinglight
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 239140').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=Documents\DyingLight\out\settings"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -420,11 +422,11 @@ call :!target!
 :sleepingdogs
 
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 307690').InstallLocation"') do set "object=%%r"
-    if not defined object echo ERROR: you have not installed "!target!" & goto menu
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
 
     if /i %action% == save (
-        if exist !savego! rd /s /q !savego!
+        if /i exist !savego! rd /s /q !savego!
 
         set "file=data\DisplaySettings.xml"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!object!\!file!" "%%~dpf"
