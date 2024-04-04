@@ -1,10 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
 
-for /f %%w in ('powershell -command "(Get-Date).DayOfYear / 7 + 1 -as [int]"') do (
-    set version=%date:~2,2%w%%wa
-    title !version!
-)
 
 for %%f in ("%cd%") do if /i not "%%~nxf" == "%~n0" (
     if /i not exist "%~n0" md "%~n0"
@@ -13,9 +9,22 @@ for %%f in ("%cd%") do if /i not "%%~nxf" == "%~n0" (
     call "%~nx0"
 )
 
+
 if /i not exist "%ProgramData%\Microsoft\Windows\Start Menu\Programs\%~n0.lnk" (
     powershell.exe -Command "Start-Process powershell.exe -ArgumentList '-Command $shell = New-Object -ComObject WScript.Shell; $shortcut = $shell.CreateShortcut(''%ProgramData%\Microsoft\Windows\Start Menu\Programs\%~n0.lnk''); $shortcut.WorkingDirectory = ''%~dp0''; $shortcut.TargetPath = ''%~dpnx0''; $shortcut.IconLocation = ''%SystemRoot%\System32\SHELL32.dll,199''; $shortcut.Save()'" -Verb RunAs 
 )
+
+
+for %%a in (*.exe) do set "backup=%%~na"
+
+for /f %%a in ('powershell -command "(Get-Date).DayOfYear / 7 + 1 -as [int]"') do (
+    set "version=!date:~2,2!w%%aa"
+    if /i "!version:~3,2!" == "!backup:~3,2!" (
+        for /f %%b in ('powershell.exe -Command "$build = [char]([int][char]'!backup:~-1!'+1); Write-Output $build"') do set "version=!date:~2,2!w%%a%%b"
+    )
+)
+
+title !version!
 
 
 echo:#software
@@ -38,6 +47,7 @@ echo:  "r6vegas2" ----------------- (Rainbow Six: Vegas 2)
 echo:  "undertale" ---------------- (Undertale)
 echo:  "nfs9" --------------------- (Need For Speed: Most Wanted)
 echo:  "dyinglight" --------------- (Dying Light)
+echo:  "titanfall2" --------------- (Titanfall 2)
 echo:  "sleepingdogs" ------------- (Sleeping Dogs: Definitive Edition)
 
 :menu
@@ -414,6 +424,27 @@ call :!target!
     if /i %action% == load (
         set "file=Documents\DyingLight\out\settings"
         for %%f in ("!userprofile!\!file!") do xcopy /s /i /q /y "!savego!\!file!" "%%~f"
+    )
+
+    goto menu
+
+
+:titanfall2
+
+    for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 1237970').InstallLocation"') do set "object=%%r"
+    if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
+
+
+    if /i %action% == save (
+        if /i exist !savego! rd /s /q !savego!
+
+        set "file=bin\x64_retail\client.dll"
+        for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!object!\!file!" "%%~dpf"
+    )
+
+    if /i %action% == load (
+        set "file=bin\x64_retail\client.dll"
+        for %%f in ("!object!\!file!") do xcopy /s /i /q /y "!savego!\!file!" "%%~dpf"
     )
 
     goto menu
