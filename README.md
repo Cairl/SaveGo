@@ -1,4 +1,4 @@
-# SaveGo
+# <center>SaveGo</center>
 
 [**SaveGo**](https://github.com/Cairl/SaveGo) 是 [**SavesGo**](https://github.com/Cairl/SavesGo) 的公测版，实现信息脱敏的同时适配更多操作习惯。
 
