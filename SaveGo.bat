@@ -32,7 +32,7 @@ echo:===========================================================================
 echo:  "steam" -------------------- (Steam)
 echo:  "obs" ---------------------- (Open Broadcaster Software)
 echo:  "idm" ---------------------- (Internet Download Manager)
-echo:  "potplayer" ---------------- (Global Potplayer)
+echo:  "potplayer" ---------------- (Global PotPlayer)
 echo:  "savego" ------------------- (Compress the SaveGo)
 echo:
 echo:#games
@@ -100,7 +100,7 @@ call :!target!
     for /f "tokens=*" %%r in ('powershell "(gp 'HKLM:\SOFTWARE\OBS Studio').'(Default)'"') do set "object=%%r"
     if /i not defined object echo ERROR: you have not installed "!target!" & goto menu
 
-    tasklist | findstr /i "obs64.exe"
+    tasklist | findstr /i "obs64.exe" >Nul
     if /i not errorlevel 1 echo "!target!" is running, please close the program to continue & goto obs
 
 
