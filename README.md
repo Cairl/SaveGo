@@ -12,6 +12,35 @@
 
 <br>
 
+## SaveGo 支持的功能
+
+|操作|对象|执行|
+|---|---|---|
+|`save/load`|**steam** (Steam)|储存/恢复 **Steam** 软件的配置文件。|
+|`save/load`|**obs** (Open Broadcaster Software)|储存/恢复 **OBS** 软件的配置文件。|
+|`save/load`|**idm** (Internet Download Manager)|储存/恢复 **IDM** 软件的配置文件。|
+|`save/load`|**potplayer** (Global PotPlayer)|储存/恢复 **PotPlayer** 软件的配置文件。|
+|`save`|**savego** (Compress the SaveGo)|打包压缩 **SaveGo** 文件夹。|
+||
+|`save/load`|**apex** (Apex Legends)|储存/恢复 **Apex** 游戏的配置文件。|
+|`save/load`|**cs2** (Counter-Strike 2)|储存/恢复 **CS2** 游戏的配置文件。|
+|`save/load`|**justcase3** (Just Cause 3)|储存/恢复 **Just Cause 3** 游戏的存档及配置文件。|
+|`save/load`|**gta4** (Grand Theft Auto IV: Complete Edition)|储存/恢复 **GTA4** 游戏的配置文件。|
+|`save/load`|**gta5** (Grand Theft Auto V)|储存/恢复 **GTA5** 游戏的配置文件。|
+|`save/load`|**r6vegas** (Rainbow Six: Vegas)|储存/恢复 **Rainbow Six: Vegas** 游戏的存档及配置文件。|
+|`save/load`|**r6vegas2** (Rainbow Six: Vegas 2)|储存/恢复 **Rainbow Six: Vegas 2** 游戏的存档及配置文件。|
+|`save/load`|**undertale** (Undertale)|储存/恢复 **Undertale** 游戏的存档文件。|
+|`save/load`|**nfs9** (Need For Speed: Most Wanted)|储存/恢复 **Need For Speed: Most Wanted** 游戏的存档文件。|
+|`save/load`|**dyinglight** (Dying Light)|储存/恢复 **Dying Light** 游戏的配置文件。|
+|`save/load`|**titanfall2** (Titanfall 2)|储存/恢复 **Titanfall 2** 游戏的 `client.dll` 文件。|
+|`save/load`|**sleepingdogs** (Sleeping Dogs: Definitive Edition)|储存/恢复 **Sleeping Dogs** 游戏的存档及配置文件。|
+
+
+
+
+
+<br>
+
 ## 如何使用？
 
 - ### 只需下载 **SaveGo.bat** 文件！
