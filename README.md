@@ -35,6 +35,8 @@
 |`save/load`|**titanfall2** (Titanfall 2)|储存/恢复 **Titanfall 2** 游戏的 `client.dll` 文件。|
 |`save/load`|**sleepingdogs** (Sleeping Dogs: Definitive Edition)|储存/恢复 **Sleeping Dogs** 游戏的存档及配置文件。|
 
+（程序会自动检测软件或游戏的安装路径，默认以 Steam 版本为准。）
+
 <br>
 
 ## 如何使用？
