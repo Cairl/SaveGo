@@ -9,11 +9,9 @@ for %%f in ("%cd%") do if /i not "%%~nxf" == "%~n0" (
     call "%~nx0"
 )
 
-
 if /i not exist "%ProgramData%\Microsoft\Windows\Start Menu\Programs\%~n0.lnk" (
     powershell.exe -Command "Start-Process powershell.exe -ArgumentList '-Command $shell = New-Object -ComObject WScript.Shell; $shortcut = $shell.CreateShortcut(''%ProgramData%\Microsoft\Windows\Start Menu\Programs\%~n0.lnk''); $shortcut.WorkingDirectory = ''%~dp0''; $shortcut.TargetPath = ''%~dpnx0''; $shortcut.IconLocation = ''%SystemRoot%\System32\SHELL32.dll,199''; $shortcut.Save()'" -Verb RunAs 
 )
-
 
 for %%a in (*.exe) do set "backup=%%~na"
 
@@ -35,6 +33,7 @@ echo:  "idm" ---------------------- (Internet Download Manager)
 echo:  "potplayer" ---------------- (Global PotPlayer)
 echo:  "savego" ------------------- (Compress the SaveGo)
 echo:
+
 echo:#games
 echo:================================================================================
 echo:  "apex" --------------------- (Apex Legends)
@@ -49,9 +48,11 @@ echo:  "nfs9" --------------------- (Need For Speed: Most Wanted)
 echo:  "dyinglight" --------------- (Dying Light)
 echo:  "titanfall2" --------------- (Titanfall 2)
 echo:  "sleepingdogs" ------------- (Sleeping Dogs: Definitive Edition)
+echo:
 
 :menu
-echo: & set /p "input=>"
+echo:
+set /p "input=>"
 
     set "action=!input:~0,4!"
     set "target=!input:~5!"
@@ -71,7 +72,7 @@ call :!target!
 
 
     if /i %action% == save ( 
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
         
         set "file=config\config.vdf"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!object!\!file!" "%%~dpf"
@@ -105,7 +106,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=obs-studio\global.ini"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!appdata!\!file!" "%%~dpf"
@@ -157,7 +158,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=Skins"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!object!\!file!" "%%~f"
@@ -190,6 +191,7 @@ call :!target!
     if /i %action% == save (
         set /p "password=set your archive password: "
 
+        if /i exist "%~n0" rd /s /q "%~n0"
         if /i exist "*.exe" del "*.exe"
 
         "!object!7z.exe" a -sfx7z.sfx -p!password! "!version!.exe" "%~dp0"
@@ -209,7 +211,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=Saved Games\Respawn\Apex\local"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -242,7 +244,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=userdata\!steam_id!\730\local\cfg"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!steam!\!file!" "%%~f"
@@ -269,7 +271,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=Documents\Square Enix\Just Cause 3\Saves"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -290,7 +292,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=Documents\Rockstar Games\GTA IV"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -311,7 +313,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=Documents\Rockstar Games\GTA V"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -332,7 +334,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=Documents\Ubisoft\R6Vegas"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -353,7 +355,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=Documents\My Games\Ubisoft\R6Vegas2"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -374,7 +376,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=UNDERTALE"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!localappdata!\!file!" "%%~f"
@@ -394,7 +396,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=Documents\NFS Most Wanted"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -415,7 +417,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=Documents\DyingLight\out\settings"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!userprofile!\!file!" "%%~f"
@@ -436,7 +438,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=bin\x64_retail\client.dll"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!object!\!file!" "%%~dpf"
@@ -457,7 +459,7 @@ call :!target!
 
 
     if /i %action% == save (
-        if /i exist !savego! rd /s /q !savego!
+        if /i exist "!savego!" rd /s /q "!savego!"
 
         set "file=data\DisplaySettings.xml"
         for %%f in ("!savego!\!file!") do xcopy /s /i /q /y "!object!\!file!" "%%~dpf"
