@@ -20,8 +20,7 @@
 |`save/load`|**obs** (Open Broadcaster Software)|储存/恢复 **OBS** 软件的配置文件。|
 |`save/load`|**idm** (Internet Download Manager)|储存/恢复 **IDM** 软件的配置文件。|
 |`save/load`|**potplayer** (Global PotPlayer)|储存/恢复 **PotPlayer** 软件的配置文件。|
-|`save`|**savego** (Compress the SaveGo)|打包压缩 **SaveGo** 文件夹。|
-||
+|`save`|**savego** (Compress the SaveGo)|压缩当前文件夹。|
 |`save/load`|**apex** (Apex Legends)|储存/恢复 **Apex** 游戏的配置文件。|
 |`save/load`|**cs2** (Counter-Strike 2)|储存/恢复 **CS2** 游戏的配置文件。|
 |`save/load`|**justcase3** (Just Cause 3)|储存/恢复 **Just Cause 3** 游戏的存档及配置文件。|
