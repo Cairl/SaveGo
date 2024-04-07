@@ -1,12 +1,13 @@
 @echo off
 setlocal enabledelayedexpansion
 
-
-for %%f in ("%cd%") do if /i not "%%~nxf" == "%~n0" (
-    if /i not exist "%~n0" md "%~n0"
-    move "%~nx0" "%~n0\%~nx0" >Nul
-    cd "%~n0"
-    call "%~nx0"
+for %%f in ("%cd%") do (
+    if /i not "%%~nxf" == "%~n0" (
+        if /i not exist "%~n0" md "%~n0"
+        move "%~nx0" "%~n0\%~nx0" >Nul
+        cd "%~n0"
+        call "%~nx0"
+    )
 )
 
 if /i not exist "%ProgramData%\Microsoft\Windows\Start Menu\Programs\%~n0.lnk" (
@@ -198,10 +199,13 @@ call :!target!
             
         explorer /select, "%~dp0!version!.exe"
 
-        start https://github.com/Cairl/SaveGo/releases/new
+        if /i !username! == Cairl (
+            start https://github.com/Cairl/SaveGo/releases/new
+            start https://github.com/Cairl/SaveGo/edit/main/SaveGo.bat
+        )
     )
 
-    goto menu
+    exit
 
 
 :apex
